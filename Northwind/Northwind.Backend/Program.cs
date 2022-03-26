@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using Northwind.Backend.Models;
+using Northwind.Backend.DataContext;
 
 var builder = WebApplication.CreateBuilder(args);
 

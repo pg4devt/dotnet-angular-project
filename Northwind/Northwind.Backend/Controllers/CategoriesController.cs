@@ -8,47 +8,47 @@ namespace Northwind.Backend.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class EmployeesController : ControllerBase
+    public class CategoriesController : ControllerBase
     {
         private readonly NorthwindContext _context;
 
-        public EmployeesController(NorthwindContext context)
+        public CategoriesController(NorthwindContext context)
         {
             _context = context;
         }
 
-        // GET: api/Employees
+        // GET: api/Categories
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Employee>>> GetEmployees()
+        public async Task<ActionResult<IEnumerable<Category>>> GetCategories()
         {
-            return await _context.Employees.ToListAsync();
+            return await _context.Categories.ToListAsync();
         }
 
-        // GET: api/Employees/5
+        // GET: api/Categories/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Employee>> GetEmployee(int id)
+        public async Task<ActionResult<Category>> GetCategory(int id)
         {
-            var employee = await _context.Employees.FindAsync(id);
+            var category = await _context.Categories.FindAsync(id);
 
-            if (employee == null)
+            if (category == null)
             {
                 return NotFound();
             }
 
-            return employee;
+            return category;
         }
 
-        // PUT: api/Employees/5
+        // PUT: api/Categories/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutEmployee(int id, Employee employee)
+        public async Task<IActionResult> PutCategory(int id, Category category)
         {
-            if (id != employee.EmployeeId)
+            if (id != category.CategoryId)
             {
                 return BadRequest();
             }
 
-            _context.Entry(employee).State = EntityState.Modified;
+            _context.Entry(category).State = EntityState.Modified;
 
             try
             {
@@ -56,7 +56,7 @@ namespace Northwind.Backend.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!EmployeeExists(id))
+                if (!CategoryExists(id))
                 {
                     return NotFound();
                 }
@@ -69,36 +69,36 @@ namespace Northwind.Backend.Controllers
             return NoContent();
         }
 
-        // POST: api/Employees
+        // POST: api/Categories
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Employee>> PostEmployee(Employee employee)
+        public async Task<ActionResult<Category>> PostCategory(Category category)
         {
-            _context.Employees.Add(employee);
+            _context.Categories.Add(category);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetEmployee", new { id = employee.EmployeeId }, employee);
+            return CreatedAtAction("GetCategory", new { id = category.CategoryId }, category);
         }
 
-        // DELETE: api/Employees/5
+        // DELETE: api/Categories/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteEmployee(int id)
+        public async Task<IActionResult> DeleteCategory(int id)
         {
-            var employee = await _context.Employees.FindAsync(id);
-            if (employee == null)
+            var category = await _context.Categories.FindAsync(id);
+            if (category == null)
             {
                 return NotFound();
             }
 
-            _context.Employees.Remove(employee);
+            _context.Categories.Remove(category);
             await _context.SaveChangesAsync();
 
             return NoContent();
         }
 
-        private bool EmployeeExists(int id)
+        private bool CategoryExists(int id)
         {
-            return _context.Employees.Any(e => e.EmployeeId == id);
+            return _context.Categories.Any(e => e.CategoryId == id);
         }
     }
 }

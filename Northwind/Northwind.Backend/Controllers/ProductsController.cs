@@ -1,4 +1,9 @@
 ﻿#nullable disable
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Northwind.Backend.DataContext;
@@ -8,47 +13,47 @@ namespace Northwind.Backend.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class EmployeesController : ControllerBase
+    public class ProductsController : ControllerBase
     {
         private readonly NorthwindContext _context;
 
-        public EmployeesController(NorthwindContext context)
+        public ProductsController(NorthwindContext context)
         {
             _context = context;
         }
 
-        // GET: api/Employees
+        // GET: api/Products
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Employee>>> GetEmployees()
+        public async Task<ActionResult<IEnumerable<Product>>> GetProducts()
         {
-            return await _context.Employees.ToListAsync();
+            return await _context.Products.ToListAsync();
         }
 
-        // GET: api/Employees/5
+        // GET: api/Products/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Employee>> GetEmployee(int id)
+        public async Task<ActionResult<Product>> GetProduct(int id)
         {
-            var employee = await _context.Employees.FindAsync(id);
+            var product = await _context.Products.FindAsync(id);
 
-            if (employee == null)
+            if (product == null)
             {
                 return NotFound();
             }
 
-            return employee;
+            return product;
         }
 
-        // PUT: api/Employees/5
+        // PUT: api/Products/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutEmployee(int id, Employee employee)
+        public async Task<IActionResult> PutProduct(int id, Product product)
         {
-            if (id != employee.EmployeeId)
+            if (id != product.ProductId)
             {
                 return BadRequest();
             }
 
-            _context.Entry(employee).State = EntityState.Modified;
+            _context.Entry(product).State = EntityState.Modified;
 
             try
             {
@@ -56,7 +61,7 @@ namespace Northwind.Backend.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!EmployeeExists(id))
+                if (!ProductExists(id))
                 {
                     return NotFound();
                 }
@@ -69,36 +74,36 @@ namespace Northwind.Backend.Controllers
             return NoContent();
         }
 
-        // POST: api/Employees
+        // POST: api/Products
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Employee>> PostEmployee(Employee employee)
+        public async Task<ActionResult<Product>> PostProduct(Product product)
         {
-            _context.Employees.Add(employee);
+            _context.Products.Add(product);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetEmployee", new { id = employee.EmployeeId }, employee);
+            return CreatedAtAction("GetProduct", new { id = product.ProductId }, product);
         }
 
-        // DELETE: api/Employees/5
+        // DELETE: api/Products/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteEmployee(int id)
+        public async Task<IActionResult> DeleteProduct(int id)
         {
-            var employee = await _context.Employees.FindAsync(id);
-            if (employee == null)
+            var product = await _context.Products.FindAsync(id);
+            if (product == null)
             {
                 return NotFound();
             }
 
-            _context.Employees.Remove(employee);
+            _context.Products.Remove(product);
             await _context.SaveChangesAsync();
 
             return NoContent();
         }
 
-        private bool EmployeeExists(int id)
+        private bool ProductExists(int id)
         {
-            return _context.Employees.Any(e => e.EmployeeId == id);
+            return _context.Products.Any(e => e.ProductId == id);
         }
     }
 }
