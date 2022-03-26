@@ -1,9 +1,11 @@
 using Microsoft.EntityFrameworkCore;
 using Northwind.Backend.DataContext;
+using Northwind.Backend.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddTransient<IOrderService, OrderService>();
 
 builder.Services.AddControllers();
 builder.Services.AddDbContext<NorthwindContext>(options =>
@@ -23,6 +25,11 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
     app.UseDeveloperExceptionPage();
+}
+else
+{
+    app.UseExceptionHandler();
+    app.UseHsts();
 }
 
 app.UseHttpsRedirection();

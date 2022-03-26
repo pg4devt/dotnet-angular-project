@@ -7,29 +7,48 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Northwind.Backend.DataContext;
+using Northwind.Backend.Services;
 
 namespace Northwind.Backend.Models
 {
-    [Route("api/[controller]")]
-    [ApiController]
     public class OrdersController : ControllerBase
     {
-        private readonly NorthwindContext _context;
+        private NorthwindContext _context;
+        private IOrderService _service;
 
-        public OrdersController(NorthwindContext context)
+        public OrdersController(IOrderService service, NorthwindContext context)
         {
             _context = context;
+            _service = service;
         }
 
-        // GET: api/Orders
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Order>>> GetOrders()
+
+        /// <summary>
+        /// Get Orders
+        /// </summary>
+        /// <param name="top"></param>
+        /// <param name="skip"></param>
+        /// <returns></returns>
+        [HttpGet("orders")]
+        [ProducesResponseType(typeof(OrderListResult), StatusCodes.Status200OK)]
+        public async Task<ActionResult> GetOrders([FromQuery] int? top, [FromQuery] int? skip)
         {
-            return await _context.Orders.ToListAsync();
+            var lr = new OrderListRequest() { Top = top, Skip = skip };
+
+            //var result = await _context.Orders.ToListAsync();
+            var result = await _service.GetOrdersAsync(lr);
+
+            return Ok(result);
+            
         }
 
-        // GET: api/Orders/5
-        [HttpGet("{id}")]
+        /// <summary>
+        /// Get Order by Id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpGet("orders/{id}")]
+        [ProducesResponseType(typeof(Order), StatusCodes.Status200OK)]
         public async Task<ActionResult<Order>> GetOrder(int id)
         {
             var order = await _context.Orders.FindAsync(id);
@@ -42,9 +61,14 @@ namespace Northwind.Backend.Models
             return order;
         }
 
-        // PUT: api/Orders/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
+        /// <summary>
+        /// Update Order
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="order"></param>
+        /// <returns></returns>
+        [HttpPut("orders/{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> PutOrder(int id, Order order)
         {
             if (id != order.OrderId)
@@ -73,10 +97,13 @@ namespace Northwind.Backend.Models
             return NoContent();
         }
 
-        // POST: api/Orders
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
-        public async Task<ActionResult<Order>> PostOrder(Order order)
+        /// <summary>
+        /// Add Order
+        /// </summary>
+        /// <param name="order"></param>
+        /// <returns></returns>
+        [HttpPost("orders/{id}")]
+        public async Task<ActionResult<Order>> PostOrder([FromBody] Order order)
         {
             _context.Orders.Add(order);
             await _context.SaveChangesAsync();
@@ -85,7 +112,7 @@ namespace Northwind.Backend.Models
         }
 
         // DELETE: api/Orders/5
-        [HttpDelete("{id}")]
+        [HttpDelete("orders/{id}")]
         public async Task<IActionResult> DeleteOrder(int id)
         {
             var order = await _context.Orders.FindAsync(id);
