@@ -1,9 +1,4 @@
 ﻿#nullable disable
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Northwind.Backend.DataContext;
@@ -31,11 +26,10 @@ namespace Northwind.Backend.Models
         /// <returns></returns>
         [HttpGet("orders")]
         [ProducesResponseType(typeof(OrderListResult), StatusCodes.Status200OK)]
-        public async Task<ActionResult> GetOrders([FromQuery] int? top, [FromQuery] int? skip)
+        public async Task<ActionResult> GetOrdersAsync([FromQuery] int? top, [FromQuery] int? skip)
         {
             var lr = new OrderListRequest() { Top = top, Skip = skip };
 
-            //var result = await _context.Orders.ToListAsync();
             var result = await _service.GetOrdersAsync(lr);
 
             return Ok(result);
@@ -49,7 +43,7 @@ namespace Northwind.Backend.Models
         /// <returns></returns>
         [HttpGet("orders/{id}")]
         [ProducesResponseType(typeof(Order), StatusCodes.Status200OK)]
-        public async Task<ActionResult<Order>> GetOrder(int id)
+        public async Task<ActionResult<Order>> GetOrderAsync(int id)
         {
             var order = await _context.Orders.FindAsync(id);
 
@@ -69,7 +63,7 @@ namespace Northwind.Backend.Models
         /// <returns></returns>
         [HttpPut("orders/{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<IActionResult> PutOrder(int id, Order order)
+        public async Task<IActionResult> PutOrderAsync(int id, Order order)
         {
             if (id != order.OrderId)
             {
@@ -103,17 +97,23 @@ namespace Northwind.Backend.Models
         /// <param name="order"></param>
         /// <returns></returns>
         [HttpPost("orders/{id}")]
-        public async Task<ActionResult<Order>> PostOrder([FromBody] Order order)
+        [ProducesResponseType(typeof(Employee), StatusCodes.Status201Created)]
+        public async Task<IActionResult> PostOrderAsync([FromBody] Order order)
         {
             _context.Orders.Add(order);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetOrder", new { id = order.OrderId }, order);
+            return CreatedAtAction("GetOrderAsync", new { id = order.OrderId }, order);
         }
 
-        // DELETE: api/Orders/5
+        /// <summary>
+        /// Delete Order
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpDelete("orders/{id}")]
-        public async Task<IActionResult> DeleteOrder(int id)
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        public async Task<IActionResult> DeleteOrderAsync(int id)
         {
             var order = await _context.Orders.FindAsync(id);
             if (order == null)

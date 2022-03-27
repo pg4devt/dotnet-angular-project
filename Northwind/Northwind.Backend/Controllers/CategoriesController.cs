@@ -6,8 +6,6 @@ using Northwind.Backend.Models;
 
 namespace Northwind.Backend.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
     public class CategoriesController : ControllerBase
     {
         private readonly NorthwindContext _context;
@@ -17,16 +15,26 @@ namespace Northwind.Backend.Controllers
             _context = context;
         }
 
-        // GET: api/Categories
-        [HttpGet]
+        /// <summary>
+        /// Get Categories
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("categories")]
+        [ProducesResponseType(typeof(CategoryListResult), StatusCodes.Status200OK)]
         public async Task<ActionResult<IEnumerable<Category>>> GetCategories()
         {
-            return await _context.Categories.ToListAsync();
+            var result = await _context.Categories.ToListAsync();
+            return Ok(result);
         }
 
-        // GET: api/Categories/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Category>> GetCategory(int id)
+        /// <summary>
+        /// Get Category by Id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpGet("categories/{id}")]
+        [ProducesResponseType(typeof(Category), StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetCategory(int id)
         {
             var category = await _context.Categories.FindAsync(id);
 
@@ -35,12 +43,17 @@ namespace Northwind.Backend.Controllers
                 return NotFound();
             }
 
-            return category;
+            return Ok(category);
         }
 
-        // PUT: api/Categories/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
+        /// <summary>
+        /// Update Category
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="category"></param>
+        /// <returns></returns>
+        [HttpPut("categories/{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> PutCategory(int id, Category category)
         {
             if (id != category.CategoryId)
@@ -69,10 +82,14 @@ namespace Northwind.Backend.Controllers
             return NoContent();
         }
 
-        // POST: api/Categories
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
-        public async Task<ActionResult<Category>> PostCategory(Category category)
+        /// <summary>
+        /// Create a Category
+        /// </summary>
+        /// <param name="category"></param>
+        /// <returns></returns>
+        [HttpPost("categories")]
+        [ProducesResponseType(typeof(Category), StatusCodes.Status201Created)]
+        public async Task<IActionResult> PostCategory([FromBody] Category category)
         {
             _context.Categories.Add(category);
             await _context.SaveChangesAsync();
@@ -80,8 +97,13 @@ namespace Northwind.Backend.Controllers
             return CreatedAtAction("GetCategory", new { id = category.CategoryId }, category);
         }
 
-        // DELETE: api/Categories/5
-        [HttpDelete("{id}")]
+        /// <summary>
+        /// Delete a Category
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpDelete("categories/{id}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
         public async Task<IActionResult> DeleteCategory(int id)
         {
             var category = await _context.Categories.FindAsync(id);

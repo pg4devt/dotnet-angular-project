@@ -1,9 +1,4 @@
 ﻿#nullable disable
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Northwind.Backend.DataContext;
@@ -11,8 +6,6 @@ using Northwind.Backend.Models;
 
 namespace Northwind.Backend.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
     public class OrderDetailsController : ControllerBase
     {
         private readonly NorthwindContext _context;
@@ -22,16 +15,22 @@ namespace Northwind.Backend.Controllers
             _context = context;
         }
 
-        // GET: api/OrderDetails
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<OrderDetail>>> GetOrderDetails()
+        /// <summary>
+        /// Get Order Details
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("order-details")]
+        [ProducesResponseType(typeof(OrderListResult), StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetOrderDetailsAsync()
         {
-            return await _context.OrderDetails.ToListAsync();
+            var result = await _context.OrderDetails.ToListAsync();
+            return Ok(result);
         }
 
-        // GET: api/OrderDetails/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<OrderDetail>> GetOrderDetail(int id)
+        
+        [HttpGet("order-details/{id}")]
+        [ProducesResponseType(typeof(OrderDetail), StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetOrderDetailAsync(int id)
         {
             var orderDetail = await _context.OrderDetails.FindAsync(id);
 
@@ -40,13 +39,11 @@ namespace Northwind.Backend.Controllers
                 return NotFound();
             }
 
-            return orderDetail;
+            return Ok(orderDetail);
         }
-
-        // PUT: api/OrderDetails/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutOrderDetail(int id, OrderDetail orderDetail)
+        
+        [HttpPut("order-details/{id}")]
+        public async Task<IActionResult> PutOrderDetailAsync(int id, OrderDetail orderDetail)
         {
             if (id != orderDetail.OrderId)
             {
@@ -73,11 +70,9 @@ namespace Northwind.Backend.Controllers
 
             return NoContent();
         }
-
-        // POST: api/OrderDetails
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
-        public async Task<ActionResult<OrderDetail>> PostOrderDetail(OrderDetail orderDetail)
+        
+        [HttpPost("order-details")]
+        public async Task<ActionResult<OrderDetail>> PostOrderDetailAsync(OrderDetail orderDetail)
         {
             _context.OrderDetails.Add(orderDetail);
             try
@@ -98,10 +93,9 @@ namespace Northwind.Backend.Controllers
 
             return CreatedAtAction("GetOrderDetail", new { id = orderDetail.OrderId }, orderDetail);
         }
-
-        // DELETE: api/OrderDetails/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteOrderDetail(int id)
+        
+        [HttpDelete("order-details/{id}")]
+        public async Task<IActionResult> DeleteOrderDetailAsync(int id)
         {
             var orderDetail = await _context.OrderDetails.FindAsync(id);
             if (orderDetail == null)

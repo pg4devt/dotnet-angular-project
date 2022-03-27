@@ -1,11 +1,12 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
 using Northwind.Backend.DataContext;
 using Northwind.Backend.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
 builder.Services.AddTransient<IOrderService, OrderService>();
+builder.Services.AddTransient<IEmployeeService, EmployeeService>();
 
 builder.Services.AddControllers();
 builder.Services.AddDbContext<NorthwindContext>(options =>

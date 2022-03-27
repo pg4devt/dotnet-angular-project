@@ -11,7 +11,7 @@ using Northwind.Backend.Models;
 
 namespace Northwind.Backend.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("products")]
     [ApiController]
     public class ProductsController : ControllerBase
     {

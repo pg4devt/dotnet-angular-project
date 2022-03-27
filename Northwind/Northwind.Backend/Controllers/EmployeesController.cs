@@ -3,45 +3,66 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Northwind.Backend.DataContext;
 using Northwind.Backend.Models;
+using Northwind.Backend.Services;
 
 namespace Northwind.Backend.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
     public class EmployeesController : ControllerBase
     {
         private readonly NorthwindContext _context;
+        private readonly IEmployeeService _service;
 
-        public EmployeesController(NorthwindContext context)
+        public EmployeesController(NorthwindContext context, IEmployeeService service)
         {
             _context = context;
+            _service = service;
         }
 
-        // GET: api/Employees
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Employee>>> GetEmployees()
+        /// <summary>
+        /// Get Employees
+        /// </summary>
+        /// <param name="top"></param>
+        /// <param name="skip"></param>
+        /// <returns></returns>
+        [HttpGet("employees")]
+        [ProducesResponseType(typeof(EmployeeListResult), StatusCodes.Status200OK)]
+        public async Task<ActionResult> GetEmployeesAsync([FromQuery] int? top, [FromQuery] int? skip)
         {
-            return await _context.Employees.ToListAsync();
+            var lr = new EmployeeListRequest() { Top = top, Skip = skip };
+
+            var result = await _service.GetEmployeesAsync(lr);
+
+            return Ok(result);
         }
 
-        // GET: api/Employees/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Employee>> GetEmployee(int id)
+        /// <summary>
+        /// Get Employee by Id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpGet("employees/{id}")]
+        [ProducesResponseType(typeof(Employee), StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetEmployeeAsunc(int id)
         {
-            var employee = await _context.Employees.FindAsync(id);
+            var employee = await _service.GetEmployeeAsync(id);
 
             if (employee == null)
             {
                 return NotFound();
             }
 
-            return employee;
+            return Ok(employee);
         }
 
-        // PUT: api/Employees/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutEmployee(int id, Employee employee)
+        /// <summary>
+        /// Update Employee
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="employee"></param>
+        /// <returns></returns>
+        [HttpPut("employees/{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<IActionResult> PutEmployeeAsync(int id, Employee employee)
         {
             if (id != employee.EmployeeId)
             {
@@ -69,20 +90,29 @@ namespace Northwind.Backend.Controllers
             return NoContent();
         }
 
-        // POST: api/Employees
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
-        public async Task<ActionResult<Employee>> PostEmployee(Employee employee)
+        /// <summary>
+        /// Add Employee
+        /// </summary>
+        /// <param name="employee"></param>
+        /// <returns></returns>
+        [HttpPost("employees")]
+        [ProducesResponseType(typeof(Employee), StatusCodes.Status201Created)]
+        public async Task<IActionResult> PostEmployeeAsync([FromBody] Employee employee)
         {
             _context.Employees.Add(employee);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetEmployee", new { id = employee.EmployeeId }, employee);
+            return CreatedAtAction("GetEmployeeAsync", new { id = employee.EmployeeId }, employee);
         }
 
-        // DELETE: api/Employees/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteEmployee(int id)
+        /// <summary>
+        /// Delete Employee
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpDelete("employees/{id}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        public async Task<IActionResult> DeleteEmployeeAsync(int id)
         {
             var employee = await _context.Employees.FindAsync(id);
             if (employee == null)

@@ -1,9 +1,4 @@
 ﻿#nullable disable
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Northwind.Backend.DataContext;
@@ -11,7 +6,7 @@ using Northwind.Backend.Models;
 
 namespace Northwind.Backend.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("customers")]
     [ApiController]
     public class CustomersController : ControllerBase
     {
