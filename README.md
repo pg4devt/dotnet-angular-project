@@ -14,13 +14,13 @@ https://www.learnentityframeworkcore.com/walkthroughs/existing-database
 
 ## Angular commands
 
-# Generate a service (ex. Employee)
+### Generate a service (ex. Employee)
 
 `cd ClientApp`
 
 `ng g s employee --path=src/app/services/employee --module=app`
 
-# Generate a component (ex. Employee)
+### Generate a component (ex. Employee)
 
 `cd ClientApp`
 
