@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { PageChangedEvent } from 'src/app/models/common/page-changed.event';
 import { Employee } from 'src/app/models/employee/employee.model';
 import { EmployeeService } from 'src/app/services/employee/employee.service';
+import { ListResult } from '../../models/common/list-result.model';
 
 @Component({
   selector: 'app-employee-list',
@@ -10,11 +11,14 @@ import { EmployeeService } from 'src/app/services/employee/employee.service';
 })
 export class EmployeeListComponent implements OnInit {
 
-  employees: Employee[] = [];
+  employees: ListResult<Employee> = { totalCount: 0, items: [] };
 
   isLoading = true;
   pageSize = 10;
   pageIndex = 0;
+
+  orderBy = 'name';
+  orderDirection = 'Asc';
 
   constructor(private _employeeService: EmployeeService) { }
 
@@ -22,8 +26,31 @@ export class EmployeeListComponent implements OnInit {
     this.onPageChanged({ pageSize: this.pageSize, pageIndex: 0 });
   }
 
+  getSortedEmployees() {
+    this.isLoading = true;
+    this._employeeService
+      .getEmployees(this.pageSize, this.pageSize * this.pageIndex, this.orderBy + this.orderDirection)
+      .subscribe((d: ListResult<Employee>) => {
+        this.employees = d;
+        this.isLoading = false;
+        console.log(this.employees);
+      });
+  }
+
   onPageChanged(event: PageChangedEvent) {
     this.pageSize = event.pageSize;
     this.pageIndex = event.pageIndex;
+    this.getSortedEmployees();
+  }
+
+  onOrderChanged(selected: string) {
+    if (this.orderBy === selected) {
+      this.orderDirection = this.orderDirection === 'Asc' ? 'Desc' : 'Asc';
+    } else {
+      this.orderDirection = 'Asc';
+    }
+    this.orderBy = selected;
+    this.pageIndex = 0;
+    this.getSortedEmployees();
   }
 }

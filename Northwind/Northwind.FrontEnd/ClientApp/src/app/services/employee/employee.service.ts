@@ -5,17 +5,20 @@ import { Observable, of } from 'rxjs';
 import { catchError, map, skip } from 'rxjs/operators';
 import { Employee } from 'src/app/models/employee/employee.model';
 import { ListResult } from 'src/app/models/common/list-result.model';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class EmployeeService {
 
+  baseUrl = environment.baseUrl;
+
   constructor(private _httpClient: HttpClient, private _router: Router) { }
 
   public getEmployees(top: number, skip: number, orderBy: string): Observable<ListResult<Employee>> {
     return this._httpClient
-      .get<ListResult<Employee>>(`/employees?top=${top}&skip=${skip}`)
+      .get<ListResult<Employee>>(`${this.baseUrl}/employees?orderBy=${orderBy}&top=${top}&skip=${skip}`)
       .pipe(
         map((data: ListResult<Employee>) => this.mapEmployeeListResult(data)),
         catchError(error => this.throwError(error))
@@ -24,7 +27,7 @@ export class EmployeeService {
 
   public getEmployee(employeeId: number): Observable<Employee> {
     return this._httpClient
-      .get<Employee>(`/employees/${employeeId}`)
+      .get<Employee>(`${this.baseUrl}/employees/${employeeId}`)
       .pipe(
         catchError(error => this.throwError(error))
       )
@@ -32,7 +35,7 @@ export class EmployeeService {
 
   createEmployee(employee: Employee): Observable<Employee> {
     return this._httpClient
-      .post<Employee>(`/employees`, employee)
+      .post<Employee>(`${this.baseUrl}/employees`, employee)
       .pipe(
         map((data: Employee) => {
           return data;
@@ -44,7 +47,7 @@ export class EmployeeService {
 
   updateEmployee(employee: Employee, employeeId: number): Observable<any> {
     return this._httpClient
-      .put<Employee>(`/employees/${employeeId}`, employee)
+      .put<Employee>(`${this.baseUrl}/employees/${employeeId}`, employee)
       .pipe(
         map((data: Employee) => {
           return data;
@@ -55,7 +58,7 @@ export class EmployeeService {
   }
 
   deleteEmployee(employeeId: number): Observable<any> {
-    return this._httpClient.delete<Employee>(`/employees/${employeeId}`)
+    return this._httpClient.delete<Employee>(`${this.baseUrl}/employees/${employeeId}`)
       .pipe(
         map((data: Employee) => {
           return data;

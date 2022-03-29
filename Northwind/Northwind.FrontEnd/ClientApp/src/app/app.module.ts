@@ -31,6 +31,7 @@ import { OrderListComponent } from './components/order-list/order-list.component
     FormsModule,
     RouterModule.forRoot([
       { path: '', component: HomeComponent, pathMatch: 'full' },
+      { path: 'employees', component: EmployeeListComponent, pathMatch: 'full' },
     ])
   ],
   providers: [],

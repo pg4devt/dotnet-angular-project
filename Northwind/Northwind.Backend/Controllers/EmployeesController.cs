@@ -21,14 +21,20 @@ namespace Northwind.Backend.Controllers
         /// <summary>
         /// Get Employees
         /// </summary>
+        /// <param name="orderBy"></param>
         /// <param name="top"></param>
         /// <param name="skip"></param>
         /// <returns></returns>
         [HttpGet("employees")]
         [ProducesResponseType(typeof(EmployeeListResult), StatusCodes.Status200OK)]
-        public async Task<ActionResult> GetEmployeesAsync([FromQuery] int? top, [FromQuery] int? skip)
+        public async Task<ActionResult> GetEmployeesAsync([FromQuery] EmployeeOrderBy orderBy, [FromQuery] int? top, [FromQuery] int? skip)
         {
-            var lr = new EmployeeListRequest() { Top = top, Skip = skip };
+            var lr = new EmployeeListRequest() 
+            { 
+                Top = top, 
+                Skip = skip,
+                OrderBy = orderBy,
+            };
 
             var result = await _service.GetEmployeesAsync(lr);
 
