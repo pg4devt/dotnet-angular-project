@@ -28,12 +28,10 @@ export class EmployeeListComponent implements OnInit {
 
   getSortedEmployees() {
     this.isLoading = true;
-    this._employeeService
-      .getEmployees(this.pageSize, this.pageSize * this.pageIndex, this.orderBy + this.orderDirection)
+    this._employeeService.getEmployees(this.pageSize, this.pageSize * this.pageIndex, this.orderBy + this.orderDirection)
       .subscribe((d: ListResult<Employee>) => {
         this.employees = d;
         this.isLoading = false;
-        console.log(this.employees);
       });
   }
 

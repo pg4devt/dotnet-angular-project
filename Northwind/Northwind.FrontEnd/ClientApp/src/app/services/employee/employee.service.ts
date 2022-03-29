@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable, of } from 'rxjs';
@@ -18,11 +18,7 @@ export class EmployeeService {
 
   public getEmployees(top: number, skip: number, orderBy: string): Observable<ListResult<Employee>> {
     return this._httpClient
-      .get<ListResult<Employee>>(`${this.baseUrl}/employees?orderBy=${orderBy}&top=${top}&skip=${skip}`)
-      .pipe(
-        map((data: ListResult<Employee>) => this.mapEmployeeListResult(data)),
-        catchError(error => this.throwError(error))
-      )
+      .get<ListResult<Employee>>(`${this.baseUrl}/employees?orderBy=${orderBy}&top=${top}&skip=${skip}`);
   }
 
   public getEmployee(employeeId: number): Observable<Employee> {
@@ -79,8 +75,10 @@ export class EmployeeService {
   }
 
   private throwError(error: any) {
-    console.error(error);
     return Observable.throw(error.json().error || 'Server error');
   }
 
+  private handleServiceError(error: HttpErrorResponse, router: Router) {
+    router.navigate(['/error'], { queryParams: { error: JSON.stringify(error), url: router.url }, skipLocationChange: true });
+  }
 }

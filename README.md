@@ -1,5 +1,8 @@
 # dotnet-angular-project
 
+## Tutorial: Create an ASP.NET Core app with Angular in Visual Studio
+https://docs.microsoft.com/en-us/visualstudio/javascript/tutorial-asp-net-core-with-angular?view=vs-2022
+
 ## Tutorial: Create a web API with ASP.NET Core
 https://docs.microsoft.com/en-us/aspnet/core/tutorials/first-web-api?view=aspnetcore-6.0&tabs=visual-studio
 
