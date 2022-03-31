@@ -234,10 +234,10 @@ namespace Northwind.Backend.DataContext
 
                 entity.Property(e => e.TitleOfCourtesy).HasMaxLength(25);
 
-                entity.HasOne(d => d.ReportsToNavigation)
-                    .WithMany(p => p.InverseReportsToNavigation)
-                    .HasForeignKey(d => d.ReportsTo)
-                    .HasConstraintName("FK_Employees_Employees");
+                //entity.HasOne(d => d.ReportsToNavigation)
+                //    .WithMany(p => p.InverseReportsToNavigation)
+                //    .HasForeignKey(d => d.ReportsTo)
+                //    .HasConstraintName("FK_Employees_Employees");
 
                 entity.HasMany(d => d.Territories)
                     .WithMany(p => p.Employees)

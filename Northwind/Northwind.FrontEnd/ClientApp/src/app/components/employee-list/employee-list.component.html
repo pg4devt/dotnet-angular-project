@@ -1,3 +1,47 @@
-<p>employee-list works!</p>
+<div class="loading" *ngIf="isLoading === true">
+    <mat-spinner></mat-spinner>
+</div>
 
-{{employees}}
+<div *ngIf="isLoading === false">
+  <div class="card">
+    <h4>Employees</h4>
+  </div>
+  <div class="card">
+    <table class="styled-table">
+      <thead>
+        <tr>
+          <th>Id</th>
+          <th></th>
+          <th>First Name</th>
+          <th>Last Name</th>
+          <th>Title</th>
+          <th>City</th>
+          <th>Region</th>
+          <th>Country</th>
+          <th>Postal Code</th>
+        </tr>
+      </thead>
+      <tbody>
+        <ng-template *ngIf="employees.items !== undefined && employees.items.length > 0"
+          ngFor let-item="$implicit" [ngForOf]="employees.items" let-i="index">
+          <tr>
+            <td><p>{{ item.employeeId }}</p></td>
+            <td>
+              <!-- <img src="data:image/jpg;base64,"{{ item.photo }} alt="employee"> -->
+            </td>
+            <td><p>{{ item.firstName }}</p></td>
+            <td><p>{{ item.lastName }}</p></td>
+            <td><p>{{ item.title }}</p></td>
+            <td><p>{{ item.city }}</p></td>
+            <td><p>{{ item.region }}</p></td>
+            <td><p>{{ item.country }}</p></td>
+            <td><p>{{ item.postalCode }}</p></td>
+          </tr>
+        </ng-template>
+      </tbody>
+    </table>
+  </div>
+  <div class="card">
+    <mat-paginator [pageSize]="pageSize" [pageIndex]="pageIndex" [pageSizeOptions]="pageSizeOptions" [length]="totalCount"></mat-paginator>
+  </div>
+</div>

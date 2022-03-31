@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace Northwind.Backend.Models
+﻿namespace Northwind.Backend.Models
 {
     public partial class Employee
     {
         public Employee()
         {
-            InverseReportsToNavigation = new HashSet<Employee>();
+            //InverseReportsToNavigation = new HashSet<Employee>();
             Orders = new HashSet<Order>();
             Territories = new HashSet<Territory>();
         }
@@ -31,8 +28,8 @@ namespace Northwind.Backend.Models
         public int? ReportsTo { get; set; }
         public string? PhotoPath { get; set; }
 
-        public virtual Employee? ReportsToNavigation { get; set; }
-        public virtual ICollection<Employee> InverseReportsToNavigation { get; set; }
+        //public virtual Employee? ReportsToNavigation { get; set; }
+        //public virtual ICollection<Employee> InverseReportsToNavigation { get; set; }
         public virtual ICollection<Order> Orders { get; set; }
 
         public virtual ICollection<Territory> Territories { get; set; }

@@ -14,8 +14,11 @@ export class EmployeeListComponent implements OnInit {
   employees: ListResult<Employee> = { totalCount: 0, items: [] };
 
   isLoading = true;
-  pageSize = 10;
+
+  pageSize = 5;
   pageIndex = 0;
+  pageSizeOptions = [5, 10, 25, 100];
+  totalCount = 0;
 
   orderBy = 'name';
   orderDirection = 'Asc';
@@ -31,6 +34,7 @@ export class EmployeeListComponent implements OnInit {
     this._employeeService.getEmployees(this.pageSize, this.pageSize * this.pageIndex, this.orderBy + this.orderDirection)
       .subscribe((d: ListResult<Employee>) => {
         this.employees = d;
+        this.totalCount = d.totalCount;
         this.isLoading = false;
       });
   }
