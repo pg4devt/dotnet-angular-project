@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Northwind.Backend.DataContext;
 using Northwind.Backend.Models;
+using System.Drawing;
 
 namespace Northwind.Backend.Services
 {
@@ -32,6 +33,14 @@ namespace Northwind.Backend.Services
 
             var totalCount = employees.Count;
 
+            foreach(var employee in employeesQuery)
+            {
+                if (employee.Photo != null)
+                {
+                    employee.PhotoPath = @"data:image/jpeg;base64," + Convert.ToBase64String(employee.Photo);
+                }
+            }
+
             var result = new EmployeeListResult
             {
                 TotalCount = totalCount,
@@ -40,11 +49,36 @@ namespace Northwind.Backend.Services
 
             return result;
         }
-
+        
         public async Task<Employee> GetEmployeeAsync(int id)
         {
             var result = await _context.Employees.FindAsync(id);
             return result;
+        }
+
+        private byte[] ImageToByteArray(Image imageIn)
+        {
+            if (imageIn is null)
+            {
+                throw new ArgumentNullException(nameof(imageIn));
+            }
+
+            using (var ms = new MemoryStream())
+            {
+                imageIn.Save(ms, System.Drawing.Imaging.ImageFormat.Gif);
+
+                return ms.ToArray();
+            }
+        }
+
+        private Image ByteArrayToImage(byte[] byteArrayIn)
+        {
+            using (var ms = new MemoryStream(byteArrayIn))
+            {
+                var returnImage = Image.FromStream(ms);
+
+                return returnImage;
+            }
         }
     }
 }

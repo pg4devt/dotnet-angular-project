@@ -28,3 +28,8 @@ https://www.learnentityframeworkcore.com/walkthroughs/existing-database
 `cd ClientApp`
 
 `ng g c employee-list --path=src/app/components --module=app`
+
+
+## Get the Northwind sample database for SQL Server
+
+https://docs.microsoft.com/en-us/dotnet/framework/data/adonet/sql/linq/downloading-sample-databases#get-the-northwind-sample-database-for-sql-server

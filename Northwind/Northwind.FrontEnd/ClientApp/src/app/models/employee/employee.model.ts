@@ -12,4 +12,6 @@ export class Employee {
   public postalCode: string;
   public country: string;
   public homePhone: string;
+  public photo: ImageBitmap;
+  public photoPath: string;
 }

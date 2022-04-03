@@ -1,0 +1,58 @@
+<div class="loading" *ngIf="isLoading === true">
+  <mat-spinner></mat-spinner>
+</div>
+
+<div *ngIf="isLoading === false">
+  <div class="card">
+    <h3>Employee Detail</h3>
+  </div>
+  <div class="detail-card-1">
+    <h5>{{ employee.firstName }} {{ employee.lastName}}</h5>
+    <h6>{{ employee.title }}</h6>
+    <hr>
+    <table class="table table-borderless mb-0">
+      <tbody>
+        <tr>
+          <td>Date of Birth</td>
+          <td>{{ employee.birthDate | date: 'mediumDate' }}</td>
+        </tr>
+        <tr>
+          <td>Date Hired</td>
+          <td>{{ employee.hireDate | date: 'mediumDate' }}</td>
+        </tr>
+        <tr>
+          <td>Phone</td>
+          <td>{{ employee.homePhone }}</td>
+        </tr>
+        <tr>
+          <td>Region</td>
+          <td>{{ employee.region }}</td>
+        </tr>
+        <tr>
+          <td>Country</td>
+          <td>{{ employee.country }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="detail-card-2">
+    <h4>Invoice List</h4>
+    <hr>
+    <table class="table data-table mb-0">
+      <thead class="table-color-heading">
+        <tr class="text-muted">
+          <th scope="col">ID</th>
+          <th scope="col">Date </th>
+          <th scope="col">Description</th>
+          <th scope="col">Status</th>
+          <th scope="col" class="text-right">Total</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

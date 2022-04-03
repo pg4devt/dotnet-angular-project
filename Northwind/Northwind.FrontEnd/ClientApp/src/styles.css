@@ -21,8 +21,24 @@ body {
 .card {
   padding: 20px;
   background-color: #fff;
-  margin-bottom: 10px;
-  }
+  margin-bottom: 2px;
+}
+
+.detail-card-1 {
+  float: left;
+  padding: 20px;
+  background-color: #fff;
+  width: 35%;
+  margin: 2px;
+}
+
+.detail-card-2 {
+  float: right;
+  padding: 20px;
+  background-color: #fff;
+  width: 64%;
+  margin: 2px;
+}
 
 .btn-primary {
   color: #fff;
@@ -39,33 +55,29 @@ body {
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
   margin-left: auto;
   margin-right: auto;
-  width: 900px;
+  width: 100%;
 }
 
-  .styled-table thead tr {
-    background-color: #000000;
-    color: #ffffff;
-    text-align: left;
-  }
+.styled-table thead tr {
+  background-color: #000000;
+  color: #ffffff;
+  text-align: left;
+}
 
-  .styled-table th,
-  .styled-table td {
-    padding: 12px 15px;
-  }
+.styled-table th,
+.styled-table td {
+  padding: 12px 15px;
+}
 
-  .styled-table tbody tr {
-    border-bottom: 1px solid #ffffff;
-  }
+.styled-table tbody tr {
+  border-bottom: 1px solid #ffffff;
+}
 
-    .styled-table tbody tr:nth-of-type(even) {
-      background-color: #f3f3f3;
-    }
+.styled-table tbody tr:nth-of-type(even) {
+  background-color: #f3f3f3;
+}
 
-    .styled-table tbody tr:last-of-type {
-      border-bottom: 2px solid #1c0098;
-    }
-
-    .styled-table tbody tr.active-row {
-      font-weight: bold;
-      color: #009879;
-    }
+.styled-table tbody tr.active-row {
+  font-weight: bold;
+  color: #009879;
+}
