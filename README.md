@@ -36,9 +36,9 @@
 
 ## Angular commands
 
-#### Create routing module
+#### Generate routing module
 
-`ng g module app --routing`
+`ng g module app --routing --flat`
 
 #### Generate a service (ex. Employee)
 
@@ -54,7 +54,7 @@
 
 #### Generate a feature module (to organize code) (ex. All Angular Material in one module)
 
-`ng g module MaterialUI`
+`ng g module MaterialUI --flat`
 
 ## Get the Northwind sample database for SQL Server
 
