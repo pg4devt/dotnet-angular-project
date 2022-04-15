@@ -4,10 +4,6 @@ import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { MatPaginatorModule } from '@angular/material/paginator';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-
 import { AppComponent } from './app.component';
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
 import { HomeComponent } from './home/home.component';
@@ -17,7 +13,7 @@ import { CategoryListComponent } from './components/category-list/category-list.
 import { ProductListComponent } from './components/product-list/product-list.component';
 import { OrderListComponent } from './components/order-list/order-list.component';
 import { EmployeeDetailComponent } from './components/employee-detail/employee-detail.component';
-import { MatTooltipModule } from '@angular/material/tooltip';
+import { MaterialUIModule } from './material-ui.module';
 
 
 @NgModule({
@@ -36,10 +32,8 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
     HttpClientModule,
     FormsModule,
-    MatProgressSpinnerModule,
-    MatPaginatorModule,
     BrowserAnimationsModule,
-    MatTooltipModule,
+    MaterialUIModule,
     RouterModule.forRoot([
       { path: '', component: HomeComponent, pathMatch: 'full' },
       { path: 'employees', component: EmployeeListComponent, pathMatch: 'full' },
